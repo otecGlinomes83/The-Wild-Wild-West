@@ -6,6 +6,7 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerInput _playerInput;
 
     public event Action<bool> AimButtonTriggered;
+    public event Action<bool> SpringButtonTriggered;
     public event Action JumRequested;
 
     public Vector2 MoveDirection { get; private set; }
@@ -25,6 +26,9 @@ public class PlayerInputHandler : MonoBehaviour
         _playerInput.Player.Aim.performed += OnAimPerformed;
         _playerInput.Player.Aim.canceled += OnAimCanceled;
 
+        _playerInput.Player.Sprint.performed += OnSprintPerformed;
+        _playerInput.Player.Sprint.canceled += OnSprintCanceled;
+
         _playerInput.Player.Jump.performed += OnJumpPerformed;
     }
 
@@ -36,8 +40,10 @@ public class PlayerInputHandler : MonoBehaviour
         _playerInput.Player.Aim.performed -= OnAimPerformed;
         _playerInput.Player.Aim.canceled -= OnAimCanceled;
 
-        _playerInput.Player.Jump.performed -= OnJumpPerformed;
+        _playerInput.Player.Sprint.performed -= OnSprintPerformed;
+        _playerInput.Player.Sprint.canceled -= OnSprintCanceled;
 
+        _playerInput.Player.Jump.performed -= OnJumpPerformed;
     }
 
     private void Update()
@@ -52,10 +58,14 @@ public class PlayerInputHandler : MonoBehaviour
         _playerInput.Disable();
 
 
-    private void OnJumpPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
-    {
+    private void OnJumpPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
         JumRequested?.Invoke();
-    }
+
+        private void OnSprintCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)=>
+        SpringButtonTriggered?.Invoke(false);
+
+    private void OnSprintPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)=>
+        SpringButtonTriggered?.Invoke(true);
 
     private void OnAimCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
         AimButtonTriggered?.Invoke(false);
@@ -63,13 +73,9 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnAimPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
                AimButtonTriggered?.Invoke(true);
 
-    private void OnMoveCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)
-    {
+    private void OnMoveCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
         MoveDirection = Vector2.zero;
-    }
 
-    private void OnMovePerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
-    {
+    private void OnMovePerformed(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
         MoveDirection = context.ReadValue<Vector2>();
-    }
 }

@@ -13,6 +13,10 @@ public class Player : MonoBehaviour
     private Aimer _aimer;
     private Jumper _jumper;
 
+    private bool _isShouldRun = false;
+    private bool _isSprintingInput = false;
+    private bool _isAiming = false;
+
     private void Awake()
     {
         _inputHandler = GetComponent<PlayerInputHandler>();
@@ -26,17 +30,20 @@ public class Player : MonoBehaviour
     {
         _inputHandler.AimButtonTriggered += OnAimButtonTriggered;
         _inputHandler.JumRequested += OnJumpRequested;
+        _inputHandler.SpringButtonTriggered += OnSprintButtonTriggered;
     }
 
     private void OnDisable()
     {
         _inputHandler.AimButtonTriggered -= OnAimButtonTriggered;
         _inputHandler.JumRequested -= OnJumpRequested;
+        _inputHandler.SpringButtonTriggered -= OnSprintButtonTriggered;
     }
 
     private void Update()
     {
-        _mover.Move(_inputHandler.MoveDirection);
+        _mover.Move(_inputHandler.MoveDirection, _isShouldRun);
+
         _rotator.Rotate(_inputHandler.MouseDelta);
     }
 
@@ -47,9 +54,24 @@ public class Player : MonoBehaviour
 
     private void OnAimButtonTriggered(bool isAiming)
     {
+        _isAiming = isAiming;
+
         if (isAiming)
             _aimer.TakeAim();
         else
             _aimer.StopAiming();
+
+        RecalculateRunState();
+    }
+
+    private void OnSprintButtonTriggered(bool isCanRun)
+    {
+        _isSprintingInput = isCanRun;
+        RecalculateRunState();
+    }
+
+    private void RecalculateRunState()
+    {
+        _isShouldRun = _isSprintingInput && _isAiming == false;
     }
 }
