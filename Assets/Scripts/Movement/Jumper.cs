@@ -13,6 +13,8 @@ public class Jumper : MonoBehaviour
 
     private bool _isAbleToJump = false;
 
+    public bool IsJump => _isAbleToJump == false;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
