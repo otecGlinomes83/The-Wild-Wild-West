@@ -28,6 +28,7 @@ public class CharacterAnimator : MonoBehaviour
         Vector2 direction = _mover.CurrentDirection;
         _vertical = direction.y;
         _horizontal = direction.x;
+
         _speed = _mover.Speed;
     }
 

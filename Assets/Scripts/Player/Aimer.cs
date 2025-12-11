@@ -14,9 +14,19 @@ public class Aimer : MonoBehaviour
 
     private Coroutine _aimCoroutine;
 
+    private void Awake()
+    {
+        LockCursor();
+    }
+
     private void Start()
     {
         _camera.Damping = _defaultDamping;
+    }
+
+    private void OnDisable()
+    {
+        UnlockCursor();
     }
 
     public void TakeAim()
@@ -52,5 +62,17 @@ public class Aimer : MonoBehaviour
         }
 
         yield break;
+    }
+
+    private void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

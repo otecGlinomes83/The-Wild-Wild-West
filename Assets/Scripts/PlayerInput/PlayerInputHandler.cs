@@ -11,6 +11,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public Vector2 MoveDirection { get; private set; }
     public Vector2 MouseDelta { get; private set; }
+    public Vector2 MousePosition { get; private set; }
 
     private void Awake()
     {
@@ -48,6 +49,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Update()
     {
+        MousePosition = _playerInput.Player.MousePosition.ReadValue<Vector2>();
         MouseDelta = _playerInput.Player.Look.ReadValue<Vector2>();
     }
 
@@ -61,10 +63,10 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnJumpPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
         JumRequested?.Invoke();
 
-        private void OnSprintCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)=>
-        SpringButtonTriggered?.Invoke(false);
+    private void OnSprintCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
+    SpringButtonTriggered?.Invoke(false);
 
-    private void OnSprintPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)=>
+    private void OnSprintPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
         SpringButtonTriggered?.Invoke(true);
 
     private void OnAimCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
