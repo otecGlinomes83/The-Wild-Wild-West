@@ -7,7 +7,9 @@ public class PlayerInputHandler : MonoBehaviour
 
     public event Action<bool> AimButtonTriggered;
     public event Action<bool> SpringButtonTriggered;
-    public event Action JumRequested;
+    public event Action JumpRequested;
+    public event Action AttackRequested;
+    public event Action ReloadRequested;
 
     public Vector2 MoveDirection { get; private set; }
     public Vector2 MouseDelta { get; private set; }
@@ -30,6 +32,9 @@ public class PlayerInputHandler : MonoBehaviour
         _playerInput.Player.Sprint.performed += OnSprintPerformed;
         _playerInput.Player.Sprint.canceled += OnSprintCanceled;
 
+
+        _playerInput.Player.Attack.performed += OnAttackPerformed;
+        _playerInput.Player.Reload.performed += OnReloadPerformed;
         _playerInput.Player.Jump.performed += OnJumpPerformed;
     }
 
@@ -44,6 +49,8 @@ public class PlayerInputHandler : MonoBehaviour
         _playerInput.Player.Sprint.performed -= OnSprintPerformed;
         _playerInput.Player.Sprint.canceled -= OnSprintCanceled;
 
+        _playerInput.Player.Attack.performed -= OnAttackPerformed;
+        _playerInput.Player.Reload.performed -= OnReloadPerformed;
         _playerInput.Player.Jump.performed -= OnJumpPerformed;
     }
 
@@ -59,9 +66,14 @@ public class PlayerInputHandler : MonoBehaviour
     public void DisableInput() =>
         _playerInput.Disable();
 
+    private void OnReloadPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)=>
+        ReloadRequested?.Invoke();
+
+    private void OnAttackPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)=>
+        AttackRequested?.Invoke();
 
     private void OnJumpPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
-        JumRequested?.Invoke();
+        JumpRequested?.Invoke();
 
     private void OnSprintCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
     SpringButtonTriggered?.Invoke(false);

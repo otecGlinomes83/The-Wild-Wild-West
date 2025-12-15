@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Mover))]
@@ -7,6 +8,8 @@ using UnityEngine;
 [RequireComponent(typeof(Jumper))]
 public class Player : MonoBehaviour
 {
+    [SerializeField] private Gun _gun;
+
     private PlayerInputHandler _inputHandler;
     private Mover _mover;
     private Rotator _rotator;
@@ -19,6 +22,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log($"Player.Awake(). Gun ссылка = {_gun}", this);
         _inputHandler = GetComponent<PlayerInputHandler>();
         _mover = GetComponent<Mover>();
         _rotator = GetComponent<Rotator>();
@@ -28,16 +32,21 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log($"Player.OnEnable(). Gun ссылка = {_gun}", this);
         _inputHandler.AimButtonTriggered += OnAimButtonTriggered;
-        _inputHandler.JumRequested += OnJumpRequested;
+        _inputHandler.JumpRequested += OnJumpRequested;
         _inputHandler.SpringButtonTriggered += OnSprintButtonTriggered;
+        _inputHandler.AttackRequested += OnAttackRequested;
+        _inputHandler.ReloadRequested += OnReloadRequested;
     }
 
     private void OnDisable()
     {
         _inputHandler.AimButtonTriggered -= OnAimButtonTriggered;
-        _inputHandler.JumRequested -= OnJumpRequested;
+        _inputHandler.JumpRequested -= OnJumpRequested;
         _inputHandler.SpringButtonTriggered -= OnSprintButtonTriggered;
+        _inputHandler.AttackRequested -= OnAttackRequested;
+        _inputHandler.ReloadRequested -= OnReloadRequested;
     }
 
     private void Update()
@@ -45,6 +54,16 @@ public class Player : MonoBehaviour
         _mover.Move(_inputHandler.MoveDirection, _isShouldRun);
 
         _rotator.Rotate(_inputHandler.MouseDelta);
+    }
+
+    private void OnReloadRequested()
+    {
+        _gun.TryReload();
+    }
+
+    private void OnAttackRequested()
+    {
+        _gun.TryMakeShot();
     }
 
     private void OnJumpRequested()

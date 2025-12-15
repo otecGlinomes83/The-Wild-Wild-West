@@ -1,3 +1,3 @@
 using UnityEngine;
 
-public class GroundDetector : GenericDetector<Collider> { }
+public class GroundDetector : AutomaticDetector<Collider> { }
