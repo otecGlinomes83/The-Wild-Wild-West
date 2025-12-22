@@ -37,7 +37,7 @@ public class Gun : MonoBehaviour
         if (_isAbleToShot == false)
             return;
 
-        if (_magazine.CurrentAmmoCount <= 0)
+        if (_magazine.CurrentAmmo <= 0)
         {
             OutOfAmmo?.Invoke();
             return;
@@ -53,7 +53,7 @@ public class Gun : MonoBehaviour
 
     public void TryReload()
     {
-        if (_magazine.CurrentAmmoCount >= _magazine.MaxAmmo)
+        if (_magazine.CurrentAmmo >= _magazine.MaxAmmo)
             return;
 
         ReloadStarted?.Invoke();

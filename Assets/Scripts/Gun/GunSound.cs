@@ -11,11 +11,14 @@ public class GunSound : MonoBehaviour
     [SerializeField] private AudioClip _reloadSound;
     [SerializeField] private AudioClip _finishReloadSound;
 
-     private AudioSource _audioSource;
+    [SerializeField] private float _minPitch = 0.95f;
+    [SerializeField] private float _maxPitch = 1.125f;
+
+    private AudioSource _audioSource;
 
     private void Awake()
     {
-        _audioSource = GetComponent<AudioSource>(); 
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -43,12 +46,12 @@ public class GunSound : MonoBehaviour
 
     private void OnShot()
     {
-        _audioSource.PlayOneShot(_shotSound);
+        PlaySoundWithParameters(_shotSound, 0.5f);
     }
 
     private void OnOutOfAmmo()
     {
-        _audioSource.PlayOneShot(_clickSound);
+        PlaySoundWithParameters(_clickSound);
     }
 
     private void OnReloadStarted()
@@ -58,6 +61,17 @@ public class GunSound : MonoBehaviour
 
     private void OnReloadFinished()
     {
-        _audioSource.PlayOneShot(_finishReloadSound);
+        PlaySoundWithParameters(_finishReloadSound);
     }
+
+    private void PlaySoundWithParameters(AudioClip sound, float volume = 1f)
+    {
+        _audioSource.clip = sound;
+        _audioSource.volume = volume;
+        _audioSource.pitch = GetRandomPitch();
+        _audioSource.Play();
+    }
+
+    private float GetRandomPitch() =>
+        Random.Range(_minPitch, _maxPitch);
 }

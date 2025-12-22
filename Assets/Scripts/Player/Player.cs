@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Mover))]
@@ -22,7 +21,6 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log($"Player.Awake(). Gun ссылка = {_gun}", this);
         _inputHandler = GetComponent<PlayerInputHandler>();
         _mover = GetComponent<Mover>();
         _rotator = GetComponent<Rotator>();
@@ -32,7 +30,6 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log($"Player.OnEnable(). Gun ссылка = {_gun}", this);
         _inputHandler.AimButtonTriggered += OnAimButtonTriggered;
         _inputHandler.JumpRequested += OnJumpRequested;
         _inputHandler.SpringButtonTriggered += OnSprintButtonTriggered;

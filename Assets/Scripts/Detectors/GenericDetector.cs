@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GenericDetector<T> : MonoBehaviour where T : Component
@@ -13,6 +14,8 @@ public class GenericDetector<T> : MonoBehaviour where T : Component
 
     public bool TryDetect(out T detectTarget)
     {
+        List<T> detections = new List<T>();
+
         Collider[] hits = Physics.OverlapSphere(transform.position, _radius, _detectingLayer);
 
         detectTarget = null;

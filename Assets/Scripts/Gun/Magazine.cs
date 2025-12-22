@@ -1,27 +1,34 @@
+using System;
 using UnityEngine;
 
-public class Magazine : MonoBehaviour
+public class Magazine : MonoBehaviour, IChangeObservable
 {
     [SerializeField] private int _maxAmmo;
 
-    private int _currentAmmoCount;
+    private int _currentAmmo;
+
+    public event Action<int, int> ValueChanged;
 
     public int MaxAmmo => _maxAmmo;
-    public int CurrentAmmoCount => _currentAmmoCount;
+    public int CurrentAmmo => _currentAmmo;
 
     private void Awake()
     {
-        _currentAmmoCount = _maxAmmo;
+        Reload();
     }
 
     public void SpendAmmo()
     {
-        if (_currentAmmoCount <= 0)
+        if (_currentAmmo <= 0)
             return;
 
-        _currentAmmoCount--;
+        _currentAmmo--;
+        ValueChanged?.Invoke(_currentAmmo, _maxAmmo);
     }
 
-    public void Reload() =>
-        _currentAmmoCount = _maxAmmo;
+    public void Reload()
+    {
+        _currentAmmo = _maxAmmo;
+        ValueChanged?.Invoke(_currentAmmo, _maxAmmo);
+    }
 }
