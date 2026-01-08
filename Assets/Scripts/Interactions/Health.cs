@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Health : MonoBehaviour, IChangeObservable
+public class Health : MonoBehaviour, IChangeObservable, IDamageAbler
 {
     [SerializeField] private int _maxHealth;
 
@@ -15,13 +15,13 @@ public class Health : MonoBehaviour, IChangeObservable
     private void Start()
     {
         _currentHealth = _maxHealth;
-        ValueChanged?.Invoke(_currentHealth,_maxHealth);
+        ValueChanged?.Invoke(_currentHealth, _maxHealth);
     }
 
     public void Reset()
     {
         _currentHealth = _maxHealth;
-        ValueChanged?.Invoke(_currentHealth,_maxHealth);
+        ValueChanged?.Invoke(_currentHealth, _maxHealth);
     }
 
     public void TakeDamage(int damage)

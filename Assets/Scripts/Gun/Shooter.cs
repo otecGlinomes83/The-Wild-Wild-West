@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
-    [SerializeField] private HealthDetector _healthDetector;
+    [SerializeField] private DamageAblerDetector _damageAblerDetector;
     [SerializeField] private Transform _shootPosition;
     [SerializeField] private int _damage;
 
@@ -11,11 +11,11 @@ public class Shooter : MonoBehaviour
 
     public void Shoot()
     {
-       Shot?.Invoke();
+        Shot?.Invoke();
 
-        if (_healthDetector.TryDetect(out Health health) == false)
+        if (_damageAblerDetector.TryDetect(out IDamageAbler damageAbler) == false)
             return;
 
-        health.TakeDamage(_damage);
+        damageAbler.TakeDamage(_damage);
     }
 }

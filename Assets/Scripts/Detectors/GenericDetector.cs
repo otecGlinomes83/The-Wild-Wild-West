@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenericDetector<T> : MonoBehaviour where T : Component
+public class GenericDetector<T> : MonoBehaviour
 {
     [SerializeField] private float _radius = 3f;
     [SerializeField] private LayerMask _detectingLayer;
@@ -18,7 +18,7 @@ public class GenericDetector<T> : MonoBehaviour where T : Component
 
         Collider[] hits = Physics.OverlapSphere(transform.position, _radius, _detectingLayer);
 
-        detectTarget = null;
+        detectTarget = default(T);
 
         foreach (Collider hit in hits)
         {
