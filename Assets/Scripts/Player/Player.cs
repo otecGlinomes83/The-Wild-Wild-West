@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Jumper))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Gun _gun;
+   // [SerializeField] private Gun _gun;
 
     private PlayerInputHandler _inputHandler;
     private Mover _mover;
@@ -55,12 +55,12 @@ public class Player : MonoBehaviour
 
     private void OnReloadRequested()
     {
-        _gun.TryReload();
+       // _gun.TryReload();
     }
 
     private void OnAttackRequested()
     {
-        _gun.TryMakeShot();
+       // _gun.TryAttack();
     }
 
     private void OnJumpRequested()

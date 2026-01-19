@@ -6,7 +6,7 @@ public class CharacterAnimator : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private Mover _mover;
     [SerializeField] private Jumper _jumper;
-    [SerializeField] private Gun _gun;
+   // [SerializeField] private Gun _gun;
 
     [SerializeField] private float _dampTime = 0.08f;
     [SerializeField] private float _maxAnimatorSpeed = 1.2f;
@@ -28,15 +28,15 @@ public class CharacterAnimator : MonoBehaviour
         _runThreshold = _mover.MaxWalkSpeed;
     }
 
-    private void OnEnable()
-    {
-        _gun.Shot += OnShot;
-    }
+    //private void OnEnable()
+    //{
+    //    _gun.Shot += OnShot;
+    //}
 
-    private void OnDisable()
-    {
-        _gun.Shot -= OnShot;
-    }
+    //private void OnDisable()
+    //{
+    //    _gun.Shot -= OnShot;
+    //}
 
     private void Update()
     {

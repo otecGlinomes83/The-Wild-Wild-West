@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Health : MonoBehaviour, IChangeObservable, IDamageAbler
+public class Health : MonoBehaviour, IChangeObservable, IDamageable
 {
     [SerializeField] private int _maxHealth;
 
@@ -24,7 +24,7 @@ public class Health : MonoBehaviour, IChangeObservable, IDamageAbler
         ValueChanged?.Invoke(_currentHealth, _maxHealth);
     }
 
-    public void TakeDamage(int damage)
+    public void ApplyDamage(int damage)
     {
         if (damage <= 0)
             return;
@@ -32,6 +32,7 @@ public class Health : MonoBehaviour, IChangeObservable, IDamageAbler
         _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
 
         ValueChanged?.Invoke(_currentHealth, _currentHealth);
+        Debug.Log("Damage Abled!");
     }
 
     public void Heal(int healAmount)
