@@ -6,9 +6,8 @@ public class OverlapDetector : MonoBehaviour, IDamageableDetector
 {
     private Transform _startPoint;
     private DetectionData _detectionData;
-    private Vector3 _direction = Vector3.forward;
 
-    public event Action<HitType, Vector3, Vector3> Hit;
+    public event Action<HitInfo> Hit;
 
     private void OnDrawGizmos()
     {
@@ -33,7 +32,7 @@ public class OverlapDetector : MonoBehaviour, IDamageableDetector
     {
         List<IDamageable> damageablers = new List<IDamageable>();
         RaycastHit[] results = new RaycastHit[_detectionData.DetectionCount];
-        Ray ray = new Ray(_startPoint.position, _direction);
+        Ray ray = new Ray(_startPoint.position, transform.forward);
 
         int resultsCount = Physics.SphereCastNonAlloc(ray, _detectionData.Radius, results, _detectionData.MaxDistance, _detectionData.DetectLayer);
 
@@ -45,13 +44,13 @@ public class OverlapDetector : MonoBehaviour, IDamageableDetector
 
             if (results[i].collider.gameObject.TryGetComponent(out IDamageable damageable) == false)
             {
-                Hit?.Invoke(HitType.Obstacle, hitPoint, hitNormal);
+                Hit?.Invoke(new HitInfo(HitType.Obstacle, _startPoint.position, hitPoint, transform.forward, hitNormal, results[i].distance));
                 Debug.Log($"<color=red>Obstacle Hit! {gameObject.name}</color>");
 
                 continue;
             }
 
-            Hit?.Invoke(HitType.Target, hitPoint, hitNormal);
+            Hit?.Invoke(new HitInfo(HitType.Target, _startPoint.position, hitPoint, transform.forward, hitNormal, results[i].distance));
             damageablers.Add(damageable);
         }
 

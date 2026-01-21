@@ -16,4 +16,4 @@ MonoBehaviour:
   _reloadData: {fileID: 11400000, guid: 2a49e6714a0545d4197c8207c4dd1357, type: 2}
   _magazineData: {fileID: 11400000, guid: 0126a36b04e0e7f4fad4acd054ee2aa1, type: 2}
   _attackData: {fileID: 11400000, guid: 5600011c51fa680439c42248b3c0ad05, type: 2}
-  _hitEffectData: {fileID: 11400000, guid: 1afb1876b8252b448a6e526891931a05, type: 2}
+  _weaponEffectData: {fileID: 11400000, guid: c06b49e416c882c4b847d62ae868dc2b, type: 2}

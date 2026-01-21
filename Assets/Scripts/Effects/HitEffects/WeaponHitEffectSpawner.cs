@@ -2,31 +2,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class WeaponHitEffector : MonoBehaviour
+public class WeaponHitEffectSpawner : MonoBehaviour
 {
     private HitEffectData _hitEffectData;
 
     private ObjectPool<WeaponHitEffect> _effectPool;
-    private Weapon _weapon;
 
     private List<WeaponHitEffect> _activeEffects = new List<WeaponHitEffect>();
 
     private void OnDisable()
     {
-        _weapon.Hit -= OnHit;
-
         foreach (WeaponHitEffect effect in _activeEffects)
         {
             effect.ReadyForRelease -= OnEffectReadyForRelease;
         }
     }
 
-    public void Setup(Weapon weapon, HitEffectData data)
+    public void Setup( HitEffectData data)
     {
-        _weapon = weapon;
         _hitEffectData = data;
-
-        _weapon.Hit += OnHit;
 
         _effectPool = new ObjectPool<WeaponHitEffect>
             (
@@ -47,7 +41,7 @@ public class WeaponHitEffector : MonoBehaviour
         return effect;
     }
 
-    private void OnHit(HitInfo info)
+    public void Spawn(HitInfo info)
     {
         WeaponHitEffect effect = _effectPool.Get();
 

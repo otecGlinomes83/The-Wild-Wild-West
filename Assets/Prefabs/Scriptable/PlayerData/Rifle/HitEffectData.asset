@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HitEffectData
   _targetHitParticleEffect: {fileID: 655340167486046890, guid: a1b3d24199edb45448a4209a25d212b5, type: 3}
   _obstacleHitParticleEffect: {fileID: 655340167486046890, guid: 7112ef73b66b2d940a71378c1a4dbdd0, type: 3}
-  _targetHitAudio: {fileID: 8300000, guid: c39ade8b6141c3141ba26a41a6092c02, type: 3}
-  _obstacleHitAudio: {fileID: 8300000, guid: e1c1fda8aa5f73643b840a8ecbd8d046, type: 3}
+  _targetHitAudio: {fileID: 8300000, guid: 55a68cfaeb1f0ed409c1876328bcaeba, type: 3}
+  _obstacleHitAudio: {fileID: 8300000, guid: 65f9a256d38c01f47a889539b0e96267, type: 3}

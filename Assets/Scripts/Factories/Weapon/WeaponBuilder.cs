@@ -37,6 +37,6 @@ public class WeaponBuilder : MonoBehaviour
         }
 
         _weapon.Setup(_weaponData.AttackData, _weaponData.ReloadData, attackStrategy, damageableDetector, magazine, reloader);
-        WeaponHitEffector effector = WeaponHitEffectorFactory.Create(_weapon, _weaponData.HitEffectData, transform);
+        WeaponEffector weaponEffector = WeaponEffectorFactory.Create(_weapon, _weaponData.WeaponEffectData.SoundData, AudioPlayerFactory.Create(transform), ShotTracerSpawnerFactory.Create(_weaponData.WeaponEffectData.EffectData, transform), WeaponHitEffectSpawnerFactory.Create(_weaponData.WeaponEffectData.HitEffectData, transform), transform);
     }
 }

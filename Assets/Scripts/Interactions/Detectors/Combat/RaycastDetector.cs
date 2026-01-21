@@ -62,13 +62,13 @@ public class RaycastDetector : MonoBehaviour, IDamageableDetector
             if (hitInfo.collider.gameObject.TryGetComponent(out damageable))
             {
 
-                Hit?.Invoke(new HitInfo(HitType.Target, _startPoint.position, direction, hitInfo.normal, hitInfo.distance));
+                Hit?.Invoke(new HitInfo(HitType.Target, _startPoint.position, hitInfo.point, direction, hitInfo.normal, hitInfo.distance));
                 return true;
 
             }
             else
             {
-                Hit?.Invoke(new HitInfo(HitType.Obstacle, _startPoint.position, direction, hitInfo.normal, hitInfo.distance));
+                Hit?.Invoke(new HitInfo(HitType.Obstacle, _startPoint.position, hitInfo.point, direction, hitInfo.normal, hitInfo.distance));
                 return false;
             }
         }
