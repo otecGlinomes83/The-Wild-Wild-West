@@ -2,21 +2,24 @@ using UnityEngine;
 
 public class Rotator : MonoBehaviour
 {
-    [SerializeField] private Transform _cameraPivotTransform;
-
-    [SerializeField] private float _sensitivity;
-    [SerializeField] private float _maxRotation = 70f;
-    [SerializeField] private float _minRotation = -30f;
+    private PlayerContext _playerContext;
+    private RotatorData _rotatorData;
 
     private float _currentVerticalRotation;
 
+    public void Setup(RotatorData rotatorData, PlayerContext playerContext)
+    {
+        _rotatorData = rotatorData;
+        _playerContext = playerContext;
+    }
+
     public void Rotate(Vector2 mouseDelta)
     {
-        float mouseX = mouseDelta.x * _sensitivity * Time.deltaTime;
+        float mouseX = mouseDelta.x * _rotatorData.Sensitivity * Time.deltaTime;
         transform.Rotate(0, mouseX, 0);
 
-        _currentVerticalRotation += mouseDelta.y * _sensitivity * Time.deltaTime;
-        _currentVerticalRotation = Mathf.Clamp(_currentVerticalRotation, _minRotation, _maxRotation);
-        _cameraPivotTransform.localRotation = Quaternion.Euler(-_currentVerticalRotation, 0f, 0f);
+        _currentVerticalRotation += mouseDelta.y * _rotatorData.Sensitivity * Time.deltaTime;
+        _currentVerticalRotation = Mathf.Clamp(_currentVerticalRotation, _rotatorData.MinRotation, _rotatorData.MaxRotation);
+        _playerContext.CameraPivotObject.transform.localRotation = Quaternion.Euler(-_currentVerticalRotation, 0f, 0f);
     }
 }

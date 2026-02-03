@@ -15,8 +15,7 @@ public static class DamageableDetectorFactory
                 {
                     RaycastDetector detector = gameobject.AddComponent<RaycastDetector>();
 
-                    detector.Setup(detectionData);
-                    detector.Bind(weaponContext);
+                    detector.Setup(detectionData, weaponContext);
 
                     return detector;
                 }
@@ -25,8 +24,7 @@ public static class DamageableDetectorFactory
                 {
                     OverlapDetector detector = gameobject.AddComponent<OverlapDetector>();
 
-                    detector.Setup(detectionData);
-                    detector.Bind(weaponContext);
+                    detector.Setup(detectionData, weaponContext);
 
                     return detector;
                 }
@@ -35,8 +33,7 @@ public static class DamageableDetectorFactory
                 {
                     OverlapDetector detector = gameobject.AddComponent<OverlapDetector>();
 
-                    detector.Setup(detectionData);
-                    detector.Bind(weaponContext);
+                    detector.Setup(detectionData, weaponContext);
 
                     return detector;
                 }

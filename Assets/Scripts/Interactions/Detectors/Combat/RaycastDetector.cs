@@ -6,27 +6,23 @@ using Random = UnityEngine.Random;
 public class RaycastDetector : MonoBehaviour, IDamageableDetector
 {
     private DetectionData _detectionData;
-    private Transform _startPoint;
+    private WeaponContext _weaponContext;
 
     public event Action<HitInfo> Hit;
 
     private void OnDrawGizmos()
     {
-        if (_detectionData == null || _startPoint == null)
+        if (_detectionData == null || _weaponContext.DetectorStartPoint == null)
             return;
 
         Gizmos.color = Color.orangeRed;
-        Gizmos.DrawRay(_startPoint.position, transform.forward);
+        Gizmos.DrawRay(_weaponContext.DetectorStartPoint.position, transform.forward);
     }
 
-    public void Setup(DetectionData detectionData)
+    public void Setup(DetectionData detectionData, WeaponContext weaponContext)
     {
         _detectionData = detectionData;
-    }
-
-    public void Bind(WeaponContext weaponContext)
-    {
-        _startPoint = weaponContext.DetectorStartPoint;
+        _weaponContext = weaponContext;
     }
 
     public List<IDamageable> Detect()
@@ -54,7 +50,7 @@ public class RaycastDetector : MonoBehaviour, IDamageableDetector
     {
         damageable = null;
 
-        Ray ray = new Ray(_startPoint.position, direction);
+        Ray ray = new Ray(_weaponContext.DetectorStartPoint.position, direction);
         RaycastHit hitInfo = new RaycastHit();
 
         if (Physics.Raycast(ray, out hitInfo, _detectionData.MaxDistance, _detectionData.DetectLayer))
@@ -62,13 +58,13 @@ public class RaycastDetector : MonoBehaviour, IDamageableDetector
             if (hitInfo.collider.gameObject.TryGetComponent(out damageable))
             {
 
-                Hit?.Invoke(new HitInfo(HitType.Target, _startPoint.position, hitInfo.point, direction, hitInfo.normal, hitInfo.distance));
+                Hit?.Invoke(new HitInfo(HitType.Target, _weaponContext.DetectorStartPoint.position, hitInfo.point, direction, hitInfo.normal, hitInfo.distance));
                 return true;
 
             }
             else
             {
-                Hit?.Invoke(new HitInfo(HitType.Obstacle, _startPoint.position, hitInfo.point, direction, hitInfo.normal, hitInfo.distance));
+                Hit?.Invoke(new HitInfo(HitType.Obstacle, _weaponContext.DetectorStartPoint.position, hitInfo.point, direction, hitInfo.normal, hitInfo.distance));
                 return false;
             }
         }

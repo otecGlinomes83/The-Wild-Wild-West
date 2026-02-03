@@ -1,32 +1,26 @@
 using System.Collections;
-using Unity.Cinemachine;
 using UnityEngine;
 
 public class Aimer : MonoBehaviour
 {
-    [SerializeField] private CinemachineThirdPersonFollow _camera;
-    [SerializeField] private float _defaultCameraDistance = 4f;
-    [SerializeField] private float _aimCameraDistance = 3f;
-    [SerializeField] private float _aimingSpeed = 6f;
-
-    [SerializeField] private Vector3 _defaultDamping = new Vector3(0.3f, 0.3f, 0.3f);
-    [SerializeField] private Vector3 _aimDamping = new Vector3(0.1f, 0.1f, 0.1f);
+    private PlayerContext _playerContext;
+    private AimerData _aimerData;
 
     private Coroutine _aimCoroutine;
-
-    private void Awake()
-    {
-        LockCursor();
-    }
-
-    private void Start()
-    {
-        _camera.Damping = _defaultDamping;
-    }
 
     private void OnDisable()
     {
         UnlockCursor();
+    }
+
+    public void Setup(AimerData aimerData, PlayerContext playerContext)
+    {
+        _aimerData = aimerData;
+        _playerContext = playerContext;
+
+        _playerContext.Camera.Damping = _aimerData.DefaultDamping;
+
+        LockCursor();
     }
 
     public void TakeAim()
@@ -37,8 +31,8 @@ public class Aimer : MonoBehaviour
             _aimCoroutine = null;
         }
 
-        _camera.Damping = _aimDamping;
-        _aimCoroutine = StartCoroutine(SmoothAiming(_aimCameraDistance));
+        _playerContext.Camera.Damping = _aimerData.AimDamping;
+        _aimCoroutine = StartCoroutine(SmoothAiming(_aimerData.AimCameraDistance));
     }
 
     public void StopAiming()
@@ -49,15 +43,15 @@ public class Aimer : MonoBehaviour
             _aimCoroutine = null;
         }
 
-        _camera.Damping = _defaultDamping;
-        _aimCoroutine = StartCoroutine(SmoothAiming(_defaultCameraDistance));
+        _playerContext.Camera.Damping = _aimerData.DefaultDamping;
+        _aimCoroutine = StartCoroutine(SmoothAiming(_aimerData.DefaultCameraDistance));
     }
 
     private IEnumerator SmoothAiming(float distance)
     {
-        while (Mathf.Approximately(_camera.CameraDistance, distance) == false)
+        while (Mathf.Approximately(_playerContext.Camera.CameraDistance, distance) == false)
         {
-            _camera.CameraDistance = Mathf.MoveTowards(_camera.CameraDistance, distance, _aimingSpeed * Time.deltaTime);
+            _playerContext.Camera.CameraDistance = Mathf.MoveTowards(_playerContext.Camera.CameraDistance, distance, _aimerData.AimingSpeed * Time.deltaTime);
             yield return null;
         }
 

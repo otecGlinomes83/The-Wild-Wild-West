@@ -25,7 +25,7 @@ public class WeaponBuilder : MonoBehaviour
         IReloader reloader;
         Magazine magazine;
 
-        if (_weaponData.ReloadData.ReloadType != ReloadType.NonReload)
+        if (_weaponData.ReloadData != null && _weaponData.ReloadData.ReloadType != ReloadType.NonReload)
         {
             reloader = ReloaderFactory.Create(_weaponData.ReloadData, transform);
             magazine = MagazineFactory.CreateMagazine(_weaponData.MagazineData);
@@ -36,7 +36,24 @@ public class WeaponBuilder : MonoBehaviour
             magazine = null;
         }
 
-        _weapon.Setup(_weaponData.AttackData, _weaponData.ReloadData, attackStrategy, damageableDetector, magazine, reloader);
-        WeaponEffector weaponEffector = WeaponEffectorFactory.Create(_weapon, _weaponData.WeaponEffectData.SoundData, AudioPlayerFactory.Create(transform), ShotTracerSpawnerFactory.Create(_weaponData.WeaponEffectData.EffectData, transform), WeaponHitEffectSpawnerFactory.Create(_weaponData.WeaponEffectData.HitEffectData, transform), transform);
+        _weapon.Setup
+            (
+            _weaponData.AttackData,
+            _weaponData.ReloadData,
+            attackStrategy,
+            damageableDetector,
+            magazine,
+            reloader
+            );
+
+        WeaponEffector weaponEffector = WeaponEffectorFactory.Create
+            (
+            _weapon,
+            _weaponData.WeaponEffectData.SoundData,
+            AudioPlayerFactory.Create(transform),
+            ShotTracerSpawnerFactory.Create(_weaponData.WeaponEffectData.EffectData, transform),
+            WeaponHitEffectSpawnerFactory.Create(_weaponData.WeaponEffectData.HitEffectData, transform),
+            transform
+            );
     }
 }

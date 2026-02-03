@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab10bfaf838c94d4dae16500674660b2, type: 3}
+  m_Name: NewPlayerData
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
+  _moverData: {fileID: 11400000, guid: bb92256f74b5f1949822c65318b577ad, type: 2}
+  _rotatorData: {fileID: 11400000, guid: d00447c9d9999e64392cd579147b605b, type: 2}
+  _aimerData: {fileID: 11400000, guid: 3cd7e9c10e86432419125969ebc100df, type: 2}
+  _jumperData: {fileID: 11400000, guid: 11c0255080bcc264abf4d1ef1b9cd485, type: 2}
+  _detectorData: {fileID: 11400000, guid: 0b1abeb04e306ff409bcfedb054afb4d, type: 2}

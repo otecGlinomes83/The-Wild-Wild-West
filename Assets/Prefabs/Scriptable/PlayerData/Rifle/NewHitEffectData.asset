@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aecc59fe5db1e1e48829096ba827522f, type: 3}
+  m_Name: NewHitEffectData
+  m_EditorClassIdentifier: Assembly-CSharp::HitEffectData
+  _targetHitParticleEffect: {fileID: 655340167486046890, guid: a1b3d24199edb45448a4209a25d212b5, type: 3}
+  _obstacleHitParticleEffect: {fileID: 655340167486046890, guid: 7112ef73b66b2d940a71378c1a4dbdd0, type: 3}
+  _targetHitAudio: {fileID: 8300000, guid: 55a68cfaeb1f0ed409c1876328bcaeba, type: 3}
+  _obstacleHitAudio: {fileID: 8300000, guid: 65f9a256d38c01f47a889539b0e96267, type: 3}

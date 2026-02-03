@@ -1,41 +1,22 @@
+using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Mover))]
-[RequireComponent(typeof(PlayerInputHandler))]
-[RequireComponent(typeof(Rotator))]
-[RequireComponent(typeof(Aimer))]
-[RequireComponent(typeof(Jumper))]
 public class Player : MonoBehaviour
 {
-   // [SerializeField] private Gun _gun;
-
     private PlayerInputHandler _inputHandler;
     private Mover _mover;
     private Rotator _rotator;
     private Aimer _aimer;
     private Jumper _jumper;
 
+    private Inventory _inventory;
+    private Weapon _currentWeapon;
+
+    private Coroutine _updateCoroutine;
+
     private bool _isShouldRun = false;
     private bool _isSprintingInput = false;
     private bool _isAiming = false;
-
-    private void Awake()
-    {
-        _inputHandler = GetComponent<PlayerInputHandler>();
-        _mover = GetComponent<Mover>();
-        _rotator = GetComponent<Rotator>();
-        _aimer = GetComponent<Aimer>();
-        _jumper = GetComponent<Jumper>();
-    }
-
-    private void OnEnable()
-    {
-        _inputHandler.AimButtonTriggered += OnAimButtonTriggered;
-        _inputHandler.JumpRequested += OnJumpRequested;
-        _inputHandler.SpringButtonTriggered += OnSprintButtonTriggered;
-        _inputHandler.AttackRequested += OnAttackRequested;
-        _inputHandler.ReloadRequested += OnReloadRequested;
-    }
 
     private void OnDisable()
     {
@@ -44,23 +25,46 @@ public class Player : MonoBehaviour
         _inputHandler.SpringButtonTriggered -= OnSprintButtonTriggered;
         _inputHandler.AttackRequested -= OnAttackRequested;
         _inputHandler.ReloadRequested -= OnReloadRequested;
+        _inputHandler.SwitchWeaponRequested -= OnSwitchWeaponRequested;
+
+        StopCoroutine(_updateCoroutine);
     }
 
-    private void Update()
+    public void Setup(PlayerInputHandler playerInputHandler, Inventory inventory, Mover mover, Rotator rotator, Aimer aimer, Jumper jumper)
     {
-        _mover.Move(_inputHandler.MoveDirection, _isShouldRun);
+        _inputHandler = playerInputHandler;
+        _inventory = inventory;
+        _mover = mover;
+        _rotator = rotator;
+        _aimer = aimer;
+        _jumper = jumper;
 
-        _rotator.Rotate(_inputHandler.MouseDelta);
+        _inputHandler.AimButtonTriggered += OnAimButtonTriggered;
+        _inputHandler.JumpRequested += OnJumpRequested;
+        _inputHandler.SpringButtonTriggered += OnSprintButtonTriggered;
+        _inputHandler.AttackRequested += OnAttackRequested;
+        _inputHandler.ReloadRequested += OnReloadRequested;
+        _inputHandler.SwitchWeaponRequested += OnSwitchWeaponRequested;
+
+        _currentWeapon = _inventory.GetCurrentWeapon();
+
+        _updateCoroutine = StartCoroutine(UpdateState());
+    }
+
+    private void OnSwitchWeaponRequested()
+    {
+        _inventory.ReturnWeapon(_currentWeapon);
+        _currentWeapon = _inventory.GetCurrentWeapon();
     }
 
     private void OnReloadRequested()
     {
-       // _gun.TryReload();
+        _currentWeapon.TryReload();
     }
 
     private void OnAttackRequested()
     {
-       // _gun.TryAttack();
+        _currentWeapon.PerformAttack();
     }
 
     private void OnJumpRequested()
@@ -89,5 +93,18 @@ public class Player : MonoBehaviour
     private void RecalculateRunState()
     {
         _isShouldRun = _isSprintingInput && _isAiming == false;
+    }
+
+    private IEnumerator UpdateState()
+    {
+        yield return null;
+
+        while (enabled)
+        {
+            _rotator.Rotate(_inputHandler.MouseDelta);
+            _mover.Move(_inputHandler.MoveDirection, _isShouldRun);
+
+            yield return null;
+        }
     }
 }

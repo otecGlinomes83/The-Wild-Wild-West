@@ -4,54 +4,54 @@ using UnityEngine;
 
 public class OverlapDetector : MonoBehaviour, IDamageableDetector
 {
-    private Transform _startPoint;
+    private WeaponContext _weaponContext;
     private DetectionData _detectionData;
 
     public event Action<HitInfo> Hit;
 
     private void OnDrawGizmos()
     {
-        if (_detectionData == null || _startPoint == null)
+        if (_detectionData == null || _weaponContext.DetectorStartPoint == null)
             return;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(_startPoint.position, _detectionData.Radius);
+        Gizmos.DrawSphere(_weaponContext.DetectorStartPoint.position, _detectionData.Radius);
     }
 
-    public void Setup(DetectionData detectionData)
+    public void Setup(DetectionData detectionData, WeaponContext weaponContext)
     {
         _detectionData = detectionData;
-    }
-
-    public void Bind(WeaponContext weaponContext)
-    {
-        _startPoint = weaponContext.DetectorStartPoint;
+        _weaponContext = weaponContext;
     }
 
     public List<IDamageable> Detect()
     {
         List<IDamageable> damageablers = new List<IDamageable>();
-        RaycastHit[] results = new RaycastHit[_detectionData.DetectionCount];
-        Ray ray = new Ray(_startPoint.position, transform.forward);
 
-        int resultsCount = Physics.SphereCastNonAlloc(ray, _detectionData.Radius, results, _detectionData.MaxDistance, _detectionData.DetectLayer);
+        Collider[] results = new Collider[_detectionData.DetectionCount];
+
+        int resultsCount = Physics.OverlapSphereNonAlloc(_weaponContext.DetectorStartPoint.position, _detectionData.Radius, results, _detectionData.DetectLayer, QueryTriggerInteraction.Ignore);
 
         for (int i = 0; i < resultsCount; i++)
         {
-            Vector3 colliderPosition = results[i].transform.position;
-            Vector3 hitPoint = results[i].point;
-            Vector3 hitNormal = (hitPoint - _startPoint.position).normalized;
+            Collider currentCollider = results[i];
+            Vector3 hitPoint = currentCollider.ClosestPoint(_weaponContext.DetectorStartPoint.position);
 
-            if (results[i].collider.gameObject.TryGetComponent(out IDamageable damageable) == false)
+            Vector3 origin = _weaponContext.DetectorStartPoint.position;
+            Vector3 direction = (currentCollider.ClosestPoint(origin) - origin).normalized;
+            Ray ray = new Ray(origin, direction);
+
+            if (Physics.Raycast(ray, out RaycastHit info, _detectionData.Radius, _detectionData.DetectLayer))
             {
-                Hit?.Invoke(new HitInfo(HitType.Obstacle, _startPoint.position, hitPoint, transform.forward, hitNormal, results[i].distance));
-                Debug.Log($"<color=red>Obstacle Hit! {gameObject.name}</color>");
+                if (info.collider.gameObject.TryGetComponent(out IDamageable damageable) == false)
+                {
+                    Hit?.Invoke(new HitInfo(HitType.Obstacle, _weaponContext.DetectorStartPoint.position, info.point, Vector3.zero, info.normal, 0));
+                    continue;
+                }
 
-                continue;
+                Hit?.Invoke(new HitInfo(HitType.Target, _weaponContext.DetectorStartPoint.position, info.point, Vector3.zero, info.normal, 0f));
+                damageablers.Add(damageable);
             }
-
-            Hit?.Invoke(new HitInfo(HitType.Target, _startPoint.position, hitPoint, transform.forward, hitNormal, results[i].distance));
-            damageablers.Add(damageable);
         }
 
         return damageablers;

@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -12,8 +11,11 @@ public class Weapon : MonoBehaviour
     private Magazine _magazine;
     private AttackData _attackData;
     private ReloadData _reloadData;
-    private WaitForSecondsRealtime _cooldown;
+    private WaitForSeconds _cooldown;
 
+    private AttackType _attackType;
+
+    private bool _isSetupFinished;
     private bool _isAttackAble;
 
     public event Action<HitInfo> Hit;
@@ -22,6 +24,12 @@ public class Weapon : MonoBehaviour
     public event Action ReloadStarted;
     public event Action AmmoLoad;
     public event Action ReloadFinished;
+    public AttackType AttackType => _attackType;
+
+    private void OnEnable()
+    {
+        TrySubscribe();
+    }
 
     private void OnDisable()
     {
@@ -47,24 +55,16 @@ public class Weapon : MonoBehaviour
         _reloader = reloader;
         _magazine = magazine;
 
-        _cooldown = new WaitForSecondsRealtime(_attackData.AttackRate);
+        _attackType = _attackData.AttackType;
+
+        _cooldown = new WaitForSeconds(_attackData.AttackRate);
         _isAttackAble = true;
 
-        _detector.Hit += OnHit;
+        _isSetupFinished = true;
 
-        if (_reloader != null)
-        {
-            if (_reloader is IInterruptReloader interruptable)
-                interruptable.AmmoLoaded += OnAmmoLoaded;
-
-            _reloader.ReloadStarted += OnReloadStarted;
-            _reloader.ReloadFinished += OnReloadFinished;
-        }
-
-        Debug.Log($"<color=green>Setup complete! {gameObject.name}</color>");
+        TrySubscribe();
     }
 
-    [Button]
     public void PerformAttack()
     {
         if (_isAttackAble == false)
@@ -87,13 +87,10 @@ public class Weapon : MonoBehaviour
         StartCoroutine(WaitCooldown(_cooldown));
     }
 
-
-    [Button]
     public void TryReload()
     {
         if (_reloadData.ReloadType == ReloadType.NonReload)
         {
-            Debug.LogWarning($"<color=green> NonReloadable! {gameObject.name}</color>");
             return;
         }
 
@@ -104,12 +101,28 @@ public class Weapon : MonoBehaviour
     {
         if (_reloader is IInterruptReloader interruptReloader == false)
         {
-            Debug.LogWarning($"<color=green> NonInterruptable! {gameObject.name}</color>");
             return false;
         }
 
         interruptReloader.Interrupt();
         return true;
+    }
+
+    private void TrySubscribe()
+    {
+        if (_isSetupFinished == false)
+            return;
+
+        _detector.Hit += OnHit;
+
+        if (_reloader != null)
+        {
+            if (_reloader is IInterruptReloader interruptable)
+                interruptable.AmmoLoaded += OnAmmoLoaded;
+
+            _reloader.ReloadStarted += OnReloadStarted;
+            _reloader.ReloadFinished += OnReloadFinished;
+        }
     }
 
     private void OnHit(HitInfo info)
@@ -132,7 +145,7 @@ public class Weapon : MonoBehaviour
         ReloadStarted?.Invoke();
     }
 
-    private IEnumerator WaitCooldown(WaitForSecondsRealtime cooldown)
+    private IEnumerator WaitCooldown(WaitForSeconds cooldown)
     {
         _isAttackAble = false;
         yield return cooldown;

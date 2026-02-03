@@ -3,22 +3,29 @@ using UnityEngine;
 
 public class GenericDetector<T> : MonoBehaviour
 {
-    [SerializeField] private float _radius = 3f;
-    [SerializeField] private LayerMask _detectingLayer;
+    private DetectorData _detectorData;
 
     private void OnDrawGizmos()
     {
+        if (_detectorData == null)
+            return;
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _radius);
+        Gizmos.DrawWireSphere(transform.position, _detectorData.Radius);
+    }
+
+    public void Setup(DetectorData detectorData)
+    {
+        _detectorData = detectorData;
     }
 
     public bool TryDetect(out T detectTarget)
     {
         List<T> detections = new List<T>();
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, _radius, _detectingLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position, _detectorData.Radius, _detectorData.DetectionLayer);
 
-        detectTarget = default(T);
+        detectTarget = default;
 
         foreach (Collider hit in hits)
         {

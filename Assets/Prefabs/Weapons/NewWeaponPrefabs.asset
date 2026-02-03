@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69a3cc1eeab474547a3398806ae2e3bc, type: 3}
+  m_Name: NewWeaponPrefabs
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponPrefabs
+  _axe: {fileID: 6785265654407041702, guid: fa502ceddd06a80479241bec77dff634, type: 3}
+  _automaticRifle: {fileID: 6526565208001692816, guid: 63bca026f0d213e469387e6047990f15, type: 3}
+  _shotgun: {fileID: 2421891135031948654, guid: 7d63dfc7418173d4cb11c67bd0eace12, type: 3}

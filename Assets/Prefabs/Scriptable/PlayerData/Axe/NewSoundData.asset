@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8965b73840ed08549b6a4af0015e3e90, type: 3}
+  m_Name: NewSoundData
+  m_EditorClassIdentifier: Assembly-CSharp::SoundData
+  _attackSound: {fileID: 8300000, guid: ed13ce2d9a8778e4abd05d1567de41bb, type: 3}
+  _reloadStartedSound: {fileID: 0}
+  _ammoLoadSound: {fileID: 0}
+  _reloadFinishedSound: {fileID: 0}
+  _emptyShotSound: {fileID: 0}

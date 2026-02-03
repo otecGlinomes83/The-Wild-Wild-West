@@ -2,9 +2,7 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-    [SerializeField] private float _maxSpeed = 10f;
-    [SerializeField] private float _maxWalkSpeed = 6f;
-    [SerializeField] private float _acceleration = 5f;
+    private MoverData _moverData;
 
     private Vector2 _currentDirection;
 
@@ -12,8 +10,12 @@ public class Mover : MonoBehaviour
     private float _currentSpeed = 0f;
 
     public Vector2 CurrentDirection => _currentDirection;
-    public float MaxWalkSpeed => _maxWalkSpeed;
     public float Speed => _currentSpeed;
+
+    public void Setup(MoverData moverData)
+    {
+        _moverData = moverData;
+    }
 
     public void Move(Vector2 direction, bool isRunning)
     {
@@ -29,13 +31,16 @@ public class Mover : MonoBehaviour
         float maxSpeed = 0;
 
         if (isRunning)
-            maxSpeed = _maxSpeed;
+            maxSpeed = _moverData.MaxSpeed;
         else
-            maxSpeed = _maxWalkSpeed;
+            maxSpeed = _moverData.MaxWalkSpeed;
 
-        _currentSpeed = Mathf.MoveTowards(_currentSpeed, maxSpeed, _acceleration * Time.deltaTime);
+        _currentSpeed = Mathf.MoveTowards(_currentSpeed, maxSpeed, _moverData.Acceleration * Time.deltaTime);
         Vector3 moveDirection = new Vector3(direction.x, 0, direction.y);
 
         transform.Translate(moveDirection * _currentSpeed * Time.deltaTime);
     }
+
+    public float GetMaxSpeed() =>
+        _moverData.MaxSpeed;
 }
