@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class ShotTracer : MonoBehaviour
+public class ShotTracer : MonoBehaviour, IPooled
 {
     private ParticleSystem _shotParticle;
     private Coroutine _waitBeforeReleaseCoroutine;

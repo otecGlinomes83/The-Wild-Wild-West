@@ -65,7 +65,7 @@ public class Weapon : MonoBehaviour
         TrySubscribe();
     }
 
-    public void PerformAttack()
+    public void TryAttack()
     {
         if (_isAttackAble == false)
             return;
@@ -152,3 +152,32 @@ public class Weapon : MonoBehaviour
         _isAttackAble = true;
     }
 }
+
+//public class WeaponAttacker
+//{
+//    private IDamageableDetector _detector;
+//    private IAttackStrategy _attackStrategy;
+//    private CharacterAnimator _characterAnimator;
+
+//    private List<IDamageable> _targets = new List<IDamageable>();
+
+//    public void Setup(CharacterAnimator characterAnimator, IDamageableDetector damageableDetector, IAttackStrategy attackStrategy)
+//    {
+//        _detector = damageableDetector;
+//        _attackStrategy = attackStrategy;
+//        _characterAnimator = characterAnimator;
+
+
+//    }
+
+//    public void Attack()
+//    {
+
+//    }
+
+//    private void OnAttackPerformed()
+//    {
+//        _attackStrategy.Attack
+//    }
+
+//}

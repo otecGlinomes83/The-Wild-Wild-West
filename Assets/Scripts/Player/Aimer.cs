@@ -18,7 +18,7 @@ public class Aimer : MonoBehaviour
         _aimerData = aimerData;
         _playerContext = playerContext;
 
-        _playerContext.Camera.Damping = _aimerData.DefaultDamping;
+        _playerContext.Cinemachine.Damping = _aimerData.DefaultDamping;
 
         LockCursor();
     }
@@ -31,7 +31,7 @@ public class Aimer : MonoBehaviour
             _aimCoroutine = null;
         }
 
-        _playerContext.Camera.Damping = _aimerData.AimDamping;
+        _playerContext.Cinemachine.Damping = _aimerData.AimDamping;
         _aimCoroutine = StartCoroutine(SmoothAiming(_aimerData.AimCameraDistance));
     }
 
@@ -43,15 +43,15 @@ public class Aimer : MonoBehaviour
             _aimCoroutine = null;
         }
 
-        _playerContext.Camera.Damping = _aimerData.DefaultDamping;
+        _playerContext.Cinemachine.Damping = _aimerData.DefaultDamping;
         _aimCoroutine = StartCoroutine(SmoothAiming(_aimerData.DefaultCameraDistance));
     }
 
     private IEnumerator SmoothAiming(float distance)
     {
-        while (Mathf.Approximately(_playerContext.Camera.CameraDistance, distance) == false)
+        while (Mathf.Approximately(_playerContext.Cinemachine.CameraDistance, distance) == false)
         {
-            _playerContext.Camera.CameraDistance = Mathf.MoveTowards(_playerContext.Camera.CameraDistance, distance, _aimerData.AimingSpeed * Time.deltaTime);
+            _playerContext.Cinemachine.CameraDistance = Mathf.MoveTowards(_playerContext.Cinemachine.CameraDistance, distance, _aimerData.AimingSpeed * Time.deltaTime);
             yield return null;
         }
 

@@ -8,10 +8,14 @@ public class PlayerData : ScriptableObject
     [SerializeField] private AimerData _aimerData;
     [SerializeField] private JumperData _jumperData;
     [SerializeField] private DetectorData _detectorData;
+    [SerializeField] private AnimatorData _animatorData;
+    [SerializeField] private IKData _iKData;
 
     public MoverData MoverData => _moverData;
     public RotatorData RotatorData => _rotatorData;
     public AimerData AimerData => _aimerData;
     public JumperData JumperData => _jumperData;
     public DetectorData DetectorData => _detectorData;
+    public AnimatorData AnimatorData => _animatorData;
+    public IKData IKData => _iKData;
 }

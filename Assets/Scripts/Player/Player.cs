@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private CharacterAnimator _characterAnimator;
     private PlayerInputHandler _inputHandler;
     private Mover _mover;
     private Rotator _rotator;
@@ -12,11 +14,12 @@ public class Player : MonoBehaviour
     private Inventory _inventory;
     private Weapon _currentWeapon;
 
-    private Coroutine _updateCoroutine;
-
     private bool _isShouldRun = false;
     private bool _isSprintingInput = false;
     private bool _isAiming = false;
+    private bool _isAttacking = false;
+
+    private bool _isSetupFinished = false;
 
     private void OnDisable()
     {
@@ -26,11 +29,20 @@ public class Player : MonoBehaviour
         _inputHandler.AttackRequested -= OnAttackRequested;
         _inputHandler.ReloadRequested -= OnReloadRequested;
         _inputHandler.SwitchWeaponRequested -= OnSwitchWeaponRequested;
-
-        StopCoroutine(_updateCoroutine);
     }
 
-    public void Setup(PlayerInputHandler playerInputHandler, Inventory inventory, Mover mover, Rotator rotator, Aimer aimer, Jumper jumper)
+    private void Update()
+    {
+        if (_isSetupFinished == false)
+            return;
+
+        _rotator.Rotate(_inputHandler.MouseDelta);
+        _mover.Move(_inputHandler.MoveDirection, _isShouldRun);
+        _characterAnimator.SetJumpState(_jumper.IsJump);
+        _characterAnimator.UpdateMove(_mover.CurrentDirection, _mover.Speed, _mover.GetMaxSpeed());
+    }
+
+    public void Setup(CharacterAnimator characterAnimator, PlayerInputHandler playerInputHandler, Inventory inventory, Mover mover, Rotator rotator, Aimer aimer, Jumper jumper)
     {
         _inputHandler = playerInputHandler;
         _inventory = inventory;
@@ -38,6 +50,9 @@ public class Player : MonoBehaviour
         _rotator = rotator;
         _aimer = aimer;
         _jumper = jumper;
+        _characterAnimator = characterAnimator;
+
+        _characterAnimator.AttackPerformed += PerformAttack;
 
         _inputHandler.AimButtonTriggered += OnAimButtonTriggered;
         _inputHandler.JumpRequested += OnJumpRequested;
@@ -47,14 +62,16 @@ public class Player : MonoBehaviour
         _inputHandler.SwitchWeaponRequested += OnSwitchWeaponRequested;
 
         _currentWeapon = _inventory.GetCurrentWeapon();
+        _characterAnimator.SetIdle(_currentWeapon.AttackType, _currentWeapon.transform);
 
-        _updateCoroutine = StartCoroutine(UpdateState());
+        _isSetupFinished = true;
     }
 
     private void OnSwitchWeaponRequested()
     {
         _inventory.ReturnWeapon(_currentWeapon);
         _currentWeapon = _inventory.GetCurrentWeapon();
+        _characterAnimator.SetIdle(_currentWeapon.AttackType, _currentWeapon.transform);
     }
 
     private void OnReloadRequested()
@@ -64,7 +81,17 @@ public class Player : MonoBehaviour
 
     private void OnAttackRequested()
     {
-        _currentWeapon.PerformAttack();
+        if (_isAttacking == true)
+            return;
+
+        _isAttacking = true;
+        _characterAnimator.StartAttack(_currentWeapon.AttackType);
+    }
+
+    private void PerformAttack()
+    {
+        _currentWeapon.TryAttack();
+        _isAttacking = false;
     }
 
     private void OnJumpRequested()
@@ -93,18 +120,5 @@ public class Player : MonoBehaviour
     private void RecalculateRunState()
     {
         _isShouldRun = _isSprintingInput && _isAiming == false;
-    }
-
-    private IEnumerator UpdateState()
-    {
-        yield return null;
-
-        while (enabled)
-        {
-            _rotator.Rotate(_inputHandler.MouseDelta);
-            _mover.Move(_inputHandler.MoveDirection, _isShouldRun);
-
-            yield return null;
-        }
     }
 }

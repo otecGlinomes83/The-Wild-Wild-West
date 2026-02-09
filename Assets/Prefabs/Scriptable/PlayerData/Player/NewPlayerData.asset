@@ -17,3 +17,5 @@ MonoBehaviour:
   _aimerData: {fileID: 11400000, guid: 3cd7e9c10e86432419125969ebc100df, type: 2}
   _jumperData: {fileID: 11400000, guid: 11c0255080bcc264abf4d1ef1b9cd485, type: 2}
   _detectorData: {fileID: 11400000, guid: 0b1abeb04e306ff409bcfedb054afb4d, type: 2}
+  _animatorData: {fileID: 11400000, guid: a0f869e0013d2bf489767ef7b58de0d8, type: 2}
+  _iKData: {fileID: 11400000, guid: d2608cc9bfa6e684b857e852c30d0a46, type: 2}

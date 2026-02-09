@@ -17,7 +17,7 @@ public class PlayerBuilder : MonoBehaviour
 
     public void Build()
     {
-        _playerContext.Camera.transform.SetParent(_playerContext.CameraPivotObject.transform);
+        _playerContext.Cinemachine.transform.SetParent(_playerContext.CameraPivotObject.transform);
 
         Mover mover = MoverFactory.Create(_playerData.MoverData, _playerContext);
 
@@ -31,20 +31,26 @@ public class PlayerBuilder : MonoBehaviour
 
         Inventory inventory = InventoryFactory.Create(CreateWeapons(), _playerContext);
 
-        _player.Setup(playerInputHandler, inventory, mover, rotator, aimer, jumper);
+        IKController controller = IKControllerFactory.Create(_playerContext, _playerData.IKData);
+
+        CharacterAnimator characterAnimator = CharacterAnimatorFactory.Create(_playerContext, _playerData.AnimatorData, controller);
+
+        MousePositionConverter converter = MousePositionConverterFactory.Create(_playerContext, playerInputHandler);
+
+        _player.Setup(characterAnimator, playerInputHandler, inventory, mover, rotator, aimer, jumper);
     }
 
     private List<Weapon> CreateWeapons()
     {
         List<Weapon> weapons = new List<Weapon>();
 
-        Weapon axe = Instantiate(_weaponPrefabs.Axe, _playerContext.InventoryObject.transform); 
+        Weapon axe = Instantiate(_weaponPrefabs.Axe, _playerContext.InventoryObject.transform);
         Weapon shotgun = Instantiate(_weaponPrefabs.Shotgun, _playerContext.InventoryObject.transform);
         Weapon autoRifle = Instantiate(_weaponPrefabs.AutomaticRifle, _playerContext.InventoryObject.transform);
 
-        weapons.Add(axe);
         weapons.Add(shotgun);
         weapons.Add(autoRifle);
+        weapons.Add(axe);
 
         foreach (Weapon weapon in weapons)
         {
@@ -52,5 +58,39 @@ public class PlayerBuilder : MonoBehaviour
         }
 
         return weapons;
+    }
+}
+
+public static class MousePositionConverterFactory
+{
+    public static MousePositionConverter Create(PlayerContext playerContext, PlayerInputHandler playerInputHandler)
+    {
+        MousePositionConverter mousePositionConverter = playerContext.MouseConverterObject.AddComponent<MousePositionConverter>();
+
+        mousePositionConverter.Setup(playerContext.Camera, playerInputHandler);
+
+        return mousePositionConverter;
+    }
+}
+
+public static class CharacterAnimatorFactory
+{
+    public static CharacterAnimator Create(PlayerContext playerContext, AnimatorData animatorData, IKController iKController)
+    {
+        CharacterAnimator characterAnimator = playerContext.CharacterAnimatorObject.AddComponent<CharacterAnimator>();
+        characterAnimator.Setup(playerContext.Animator, animatorData, playerContext.AnimatorProxy, iKController);
+
+        return characterAnimator;
+    }
+}
+
+public static class IKControllerFactory
+{
+    public static IKController Create(PlayerContext playerContext, IKData iKData)
+    {
+        IKController controller = new IKController();
+        controller.Setup(iKData, playerContext.TwoBoneIKConstraint, playerContext.HandAim, playerContext.WeaponAim);
+
+        return controller;
     }
 }
