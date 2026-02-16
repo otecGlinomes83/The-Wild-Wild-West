@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53fb7f86125e846448a0ddcab5b29f75, type: 3}
-  m_Name: NewReloadData
-  m_EditorClassIdentifier: Assembly-CSharp::ReloadData
-  _reloadType: 2
-  _reloadTime: 2
-  _ammoLoadTime: 1
+  m_Script: {fileID: 11500000, guid: 5c133c64d8c8da546ab98f906c612695, type: 3}
+  m_Name: RifleMagazineData
+  m_EditorClassIdentifier: Assembly-CSharp::MagazineData
+  _maxAmmoCount: 30

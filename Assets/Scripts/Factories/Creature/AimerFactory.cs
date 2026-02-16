@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public static class AimerFactory
+﻿public static class AimerFactory
 {
     public static Aimer Create(AimerData aimerData, PlayerContext playerContext)
     {

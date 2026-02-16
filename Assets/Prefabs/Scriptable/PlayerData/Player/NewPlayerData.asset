@@ -19,3 +19,4 @@ MonoBehaviour:
   _detectorData: {fileID: 11400000, guid: 0b1abeb04e306ff409bcfedb054afb4d, type: 2}
   _animatorData: {fileID: 11400000, guid: a0f869e0013d2bf489767ef7b58de0d8, type: 2}
   _iKData: {fileID: 11400000, guid: d2608cc9bfa6e684b857e852c30d0a46, type: 2}
+  _smoothLookerData: {fileID: 11400000, guid: b254db97122805c4eb9f09868e09fa92, type: 2}

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4b1cf6942a99ed40904336edf50dad5, type: 3}
-  m_Name: NewDetectionData
+  m_Name: RifleDetectionData
   m_EditorClassIdentifier: Assembly-CSharp::DetectionData
   _detectLayer:
     serializedVersion: 2
     m_Bits: 73
-  _detectType: 1
-  _spreadDegree: 1
-  _isSpreadEnable: 0
-  _rayCount: 0
-  _radius: 0.125
-  _maxDistance: 0
+  _detectType: 0
+  _spreadDegree: 5
+  _isSpreadEnable: 1
+  _rayCount: 1
+  _radius: 0
+  _maxDistance: 1000
   _detectionCount: 32

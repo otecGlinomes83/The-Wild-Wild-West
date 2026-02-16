@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f32714bd227571a4a83cadc3d881db1f, type: 3}
-  m_Name: NewWeaponData
+  m_Name: ShotgunData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   _detectionData: {fileID: 11400000, guid: 56f5dfd45f0bab64c94bd9d98bdaa5bf, type: 2}
-  _reloadData: {fileID: 11400000, guid: 1ca5af8d58c7a1c4a9b98341e1e13f72, type: 2}
-  _magazineData: {fileID: 11400000, guid: 447467914d8cb5a428fca6fe75eff6b1, type: 2}
+  _reloadData: {fileID: 11400000, guid: 289fa3c91e2d1b641b8506e9adec2b3d, type: 2}
+  _magazineData: {fileID: 11400000, guid: fd6f33293fd6985448c1d935bb2098f5, type: 2}
   _attackData: {fileID: 11400000, guid: 7ee11bde95a8e9845a40c300941d8e30, type: 2}
-  _weaponEffectData: {fileID: 11400000, guid: 9c87659202d336948931be6476626508, type: 2}
+  _weaponEffectData: {fileID: 11400000, guid: f86caee2dcdf68542afc35b824922eae, type: 2}

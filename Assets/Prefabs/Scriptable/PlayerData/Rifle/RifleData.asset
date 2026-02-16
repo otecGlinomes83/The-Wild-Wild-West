@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f32714bd227571a4a83cadc3d881db1f, type: 3}
-  m_Name: NewWeaponData
+  m_Name: RifleData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   _detectionData: {fileID: 11400000, guid: bf2924ff75ae8cc4bb5289e45b515e53, type: 2}
   _reloadData: {fileID: 11400000, guid: 1ca5af8d58c7a1c4a9b98341e1e13f72, type: 2}

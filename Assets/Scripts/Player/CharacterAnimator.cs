@@ -11,6 +11,8 @@ public class CharacterAnimator : MonoBehaviour
     private IKController _controller;
 
     public event Action AttackPerformed;
+    public event Action AttackStarted;
+    public event Action AttackFinished;
 
     private int _hashVertical = Animator.StringToHash("Vertical");
     private int _hashHorizontal = Animator.StringToHash("Horizontal");
@@ -27,6 +29,18 @@ public class CharacterAnimator : MonoBehaviour
         _controller = iKController;
 
         _animatorProxy.AttackPerformed += OnAttackPerformed;
+        _animatorProxy.AttackStarted += OnAttackStarted;
+        _animatorProxy.AttackFinished += OnAttackFinished;
+    }
+
+    private void OnAttackStarted()
+    {
+        AttackStarted?.Invoke();
+    }
+
+    private void OnAttackFinished()
+    {
+        AttackFinished?.Invoke();
     }
 
     public void SetIdle(AttackType attackType, Transform weaponTransform)
@@ -61,7 +75,7 @@ public class CharacterAnimator : MonoBehaviour
 
         if (currentSpeed >= maxSpeed)
         {
-            _animator.speed = _animator.speed * _animatorData.MaxAnimatorSpeed;
+            _animator.speed = _animatorData.MaxAnimatorSpeed;
         }
         else
         {

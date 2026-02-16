@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aecc59fe5db1e1e48829096ba827522f, type: 3}
-  m_Name: NewHitEffectData
+  m_Name: ShotgunHitEffectData
   m_EditorClassIdentifier: Assembly-CSharp::HitEffectData
   _targetHitParticleEffect: {fileID: 655340167486046890, guid: a1b3d24199edb45448a4209a25d212b5, type: 3}
   _obstacleHitParticleEffect: {fileID: 655340167486046890, guid: 7112ef73b66b2d940a71378c1a4dbdd0, type: 3}

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8965b73840ed08549b6a4af0015e3e90, type: 3}
-  m_Name: NewSoundData
+  m_Name: RifleSoundData
   m_EditorClassIdentifier: Assembly-CSharp::SoundData
   _attackSound: {fileID: 8300000, guid: c39ade8b6141c3141ba26a41a6092c02, type: 3}
   _reloadStartedSound: {fileID: 8300000, guid: 769d08f8c361ce0408771e05a11ad1d8, type: 3}

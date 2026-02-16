@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -12,11 +13,16 @@ public class Weapon : MonoBehaviour
     private AttackData _attackData;
     private ReloadData _reloadData;
     private WaitForSeconds _cooldown;
+    private WaitForSeconds _autoAttackCooldown;
 
     private AttackType _attackType;
 
     private bool _isSetupFinished;
     private bool _isAttackAble;
+
+    private Coroutine _attackCoroutine;
+
+    private List<IDamageable> _attackedTargets = new List<IDamageable>();
 
     public event Action<HitInfo> Hit;
     public event Action AttackPerformed;
@@ -24,6 +30,7 @@ public class Weapon : MonoBehaviour
     public event Action ReloadStarted;
     public event Action AmmoLoad;
     public event Action ReloadFinished;
+
     public AttackType AttackType => _attackType;
 
     private void OnEnable()
@@ -58,11 +65,31 @@ public class Weapon : MonoBehaviour
         _attackType = _attackData.AttackType;
 
         _cooldown = new WaitForSeconds(_attackData.AttackRate);
+        _autoAttackCooldown = new WaitForSeconds(0.05f);
         _isAttackAble = true;
 
         _isSetupFinished = true;
 
         TrySubscribe();
+    }
+
+    public void StartAttacking()
+    {
+        if (_attackCoroutine != null)
+            return;
+
+        _attackCoroutine = StartCoroutine(AutoAttack());
+    }
+
+    public void StopAttacking()
+    {
+        if (_attackCoroutine == null)
+            return;
+
+        _attackedTargets.Clear();
+
+        StopCoroutine(_attackCoroutine);
+        _attackCoroutine = null;
     }
 
     public void TryAttack()
@@ -97,7 +124,7 @@ public class Weapon : MonoBehaviour
         _reloader.TryReload(_magazine);
     }
 
-    public bool TryInterruptReload()
+    private bool TryInterruptReload()
     {
         if (_reloader is IInterruptReloader interruptReloader == false)
         {
@@ -145,6 +172,31 @@ public class Weapon : MonoBehaviour
         ReloadStarted?.Invoke();
     }
 
+    private IEnumerator AutoAttack()
+    {
+        List<IDamageable> targetsToAttack = new List<IDamageable>();
+
+        while (enabled)
+        {
+            yield return _autoAttackCooldown;
+
+            targetsToAttack.Clear();
+
+            List<IDamageable> foundTargets = _detector.Detect();
+
+            foreach (IDamageable damageable in foundTargets)
+            {
+                if (_attackedTargets.Contains(damageable))
+                    continue;
+
+                targetsToAttack.Add(damageable);
+                _attackedTargets.Add(damageable);
+            }
+
+            _attackStrategy.Attack(targetsToAttack);
+        }
+    }
+
     private IEnumerator WaitCooldown(WaitForSeconds cooldown)
     {
         _isAttackAble = false;
@@ -152,32 +204,3 @@ public class Weapon : MonoBehaviour
         _isAttackAble = true;
     }
 }
-
-//public class WeaponAttacker
-//{
-//    private IDamageableDetector _detector;
-//    private IAttackStrategy _attackStrategy;
-//    private CharacterAnimator _characterAnimator;
-
-//    private List<IDamageable> _targets = new List<IDamageable>();
-
-//    public void Setup(CharacterAnimator characterAnimator, IDamageableDetector damageableDetector, IAttackStrategy attackStrategy)
-//    {
-//        _detector = damageableDetector;
-//        _attackStrategy = attackStrategy;
-//        _characterAnimator = characterAnimator;
-
-
-//    }
-
-//    public void Attack()
-//    {
-
-//    }
-
-//    private void OnAttackPerformed()
-//    {
-//        _attackStrategy.Attack
-//    }
-
-//}

@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bf03069f34ea2c4e9385a0c9db44be6, type: 3}
-  m_Name: NewAttackData
-  m_EditorClassIdentifier: Assembly-CSharp::AttackData
-  _attackType: 1
-  _damage: 10
-  _attackRate: 0
+  m_Script: {fileID: 11500000, guid: 5c133c64d8c8da546ab98f906c612695, type: 3}
+  m_Name: ShotgunMagazineData
+  m_EditorClassIdentifier: Assembly-CSharp::MagazineData
+  _maxAmmoCount: 5

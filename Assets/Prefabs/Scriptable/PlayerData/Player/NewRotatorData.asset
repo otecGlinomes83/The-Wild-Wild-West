@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e0e8ccdeb15854cb4051d928b5534a, type: 3}
   m_Name: NewRotatorData
   m_EditorClassIdentifier: Assembly-CSharp::RotatorData
-  _sensitivity: 1
+  _sensitivity: 1.5
   _maxRotation: 100
   _minRotation: -30

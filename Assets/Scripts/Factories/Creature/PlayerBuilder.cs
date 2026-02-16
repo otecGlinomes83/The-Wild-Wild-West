@@ -20,22 +20,15 @@ public class PlayerBuilder : MonoBehaviour
         _playerContext.Cinemachine.transform.SetParent(_playerContext.CameraPivotObject.transform);
 
         Mover mover = MoverFactory.Create(_playerData.MoverData, _playerContext);
-
-        PlayerInputHandler playerInputHandler = PlayerInputHandlerFactory.Create(_playerContext);
-
         Rotator rotator = RotatorFactory.Create(_playerData.RotatorData, _playerContext);
-
         Aimer aimer = AimerFactory.Create(_playerData.AimerData, _playerContext);
-
         Jumper jumper = JumperFactory.Create(_playerData.JumperData, _playerContext, _playerRigidbody, GroundDetectorFactory.Create(_playerData.DetectorData, _playerContext));
-
+        PlayerInputHandler playerInputHandler = PlayerInputHandlerFactory.Create(_playerContext);
         Inventory inventory = InventoryFactory.Create(CreateWeapons(), _playerContext);
-
         IKController controller = IKControllerFactory.Create(_playerContext, _playerData.IKData);
-
         CharacterAnimator characterAnimator = CharacterAnimatorFactory.Create(_playerContext, _playerData.AnimatorData, controller);
-
         MousePositionConverter converter = MousePositionConverterFactory.Create(_playerContext, playerInputHandler);
+        SmoothMouseLooker smoothMouseLooker = SmoothLookerFactory.Create(_playerData.SmoothLookerData, _playerContext, converter);
 
         _player.Setup(characterAnimator, playerInputHandler, inventory, mover, rotator, aimer, jumper);
     }
@@ -70,6 +63,18 @@ public static class MousePositionConverterFactory
         mousePositionConverter.Setup(playerContext.Camera, playerInputHandler);
 
         return mousePositionConverter;
+    }
+}
+
+public static class SmoothLookerFactory
+{
+    public static SmoothMouseLooker Create(SmoothLookerData smoothLookerData, PlayerContext playerContext, MousePositionConverter mousePositionConverter)
+    {
+        SmoothMouseLooker smoothLooker = playerContext.SmoothLookerObject.AddComponent<SmoothMouseLooker>();
+
+        smoothLooker.Setup(smoothLookerData, mousePositionConverter);
+
+        return smoothLooker;
     }
 }
 

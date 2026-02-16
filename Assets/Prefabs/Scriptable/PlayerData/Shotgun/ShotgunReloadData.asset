@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fe8314983f0fcb4883ff38a49e02210, type: 3}
-  m_Name: NewEffectData
-  m_EditorClassIdentifier: Assembly-CSharp::EffectData
-  _tracerEffectPrefab: {fileID: 6065182058833619247, guid: 4918aad0d7e6ba846a6889162f257757, type: 3}
+  m_Script: {fileID: 11500000, guid: 53fb7f86125e846448a0ddcab5b29f75, type: 3}
+  m_Name: ShotgunReloadData
+  m_EditorClassIdentifier: Assembly-CSharp::ReloadData
+  _reloadType: 0
+  _reloadTime: 2
+  _ammoLoadTime: 1

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -38,6 +37,7 @@ public class Player : MonoBehaviour
 
         _rotator.Rotate(_inputHandler.MouseDelta);
         _mover.Move(_inputHandler.MoveDirection, _isShouldRun);
+
         _characterAnimator.SetJumpState(_jumper.IsJump);
         _characterAnimator.UpdateMove(_mover.CurrentDirection, _mover.Speed, _mover.GetMaxSpeed());
     }
@@ -52,6 +52,8 @@ public class Player : MonoBehaviour
         _jumper = jumper;
         _characterAnimator = characterAnimator;
 
+        _characterAnimator.AttackStarted += StartAttack;
+        _characterAnimator.AttackFinished += FinishAttack;
         _characterAnimator.AttackPerformed += PerformAttack;
 
         _inputHandler.AimButtonTriggered += OnAimButtonTriggered;
@@ -92,6 +94,17 @@ public class Player : MonoBehaviour
     {
         _currentWeapon.TryAttack();
         _isAttacking = false;
+    }
+
+    private void FinishAttack()
+    {
+        _currentWeapon.StopAttacking();
+        _isAttacking = false;
+    }
+
+    private void StartAttack()
+    {
+        _currentWeapon.StartAttacking();
     }
 
     private void OnJumpRequested()

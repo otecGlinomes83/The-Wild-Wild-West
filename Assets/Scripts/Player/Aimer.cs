@@ -20,6 +20,8 @@ public class Aimer : MonoBehaviour
 
         _playerContext.Cinemachine.Damping = _aimerData.DefaultDamping;
 
+        _playerContext.Cinemachine.CameraDistance = _aimerData.DefaultCameraDistance;
+
         LockCursor();
     }
 

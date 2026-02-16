@@ -17,6 +17,7 @@ public class PlayerContext : MonoBehaviour
     [SerializeField] private GameObject _playerInputHandlerObject;
     [SerializeField] private GameObject _characterAnimatorObject;
     [SerializeField] private GameObject _mouseConverterObject;
+    [SerializeField] private GameObject _smoothLookerObject;
 
     [SerializeField] private Animator _animator;
     [SerializeField] private AnimatorProxy _animatorProxy;
@@ -38,6 +39,7 @@ public class PlayerContext : MonoBehaviour
     public GameObject InventoryObject => _inventoryObject;
     public GameObject CharacterAnimatorObject => _characterAnimatorObject;
     public GameObject MouseConverterObject => _mouseConverterObject;
+    public GameObject SmoothLookerObject => _smoothLookerObject;
 
     public Animator Animator => _animator;
     public AnimatorProxy AnimatorProxy => _animatorProxy;

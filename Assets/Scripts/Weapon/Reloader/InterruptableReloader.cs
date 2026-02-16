@@ -8,7 +8,6 @@ public class InterruptableReloader : MonoBehaviour, IInterruptReloader
     private WaitForSecondsRealtime _loadCooldown;
     private Coroutine _loadCoroutine;
 
-    private bool _isNeededToInterrupt = false;
     private bool _isReloading = false;
 
     public event Action AmmoLoaded;
@@ -16,6 +15,11 @@ public class InterruptableReloader : MonoBehaviour, IInterruptReloader
     public event Action ReloadFinished;
 
     public bool IsReloading => _isReloading;
+
+    private void OnDisable()
+    {
+        Interrupt();
+    }
 
     public void Setup(ReloadData data)
     {
@@ -28,7 +32,13 @@ public class InterruptableReloader : MonoBehaviour, IInterruptReloader
         if (_isReloading == false)
             return;
 
-        _isNeededToInterrupt = true;
+        StopCoroutine(_loadCoroutine);
+        _loadCoroutine = null;
+
+        _isReloading = false;
+
+        ReloadFinished?.Invoke();
+        Debug.Log($"<color=yellow> ReloadFinished!</color>");
     }
 
     public void TryReload(Magazine magazineToReload)
@@ -44,21 +54,13 @@ public class InterruptableReloader : MonoBehaviour, IInterruptReloader
 
     private IEnumerator Reload(WaitForSecondsRealtime loadCooldown, Magazine magazine)
     {
-        yield return null;
-
         _isReloading = true;
         ReloadStarted?.Invoke();
+        Debug.Log($"<color=yellow> ReloadStarted!</color>");
 
         while (magazine.CurrentAmmoCount < magazine.MaxAmmoCount)
         {
             yield return loadCooldown;
-
-            if (_isNeededToInterrupt)
-            {
-                _isNeededToInterrupt = false;
-                Debug.LogWarning($"<color=yellow> ReloadInterrupted!</color>");
-                break;
-            }
 
             magazine.AddAmmo();
             AmmoLoaded?.Invoke();

@@ -10,6 +10,7 @@ public class PlayerData : ScriptableObject
     [SerializeField] private DetectorData _detectorData;
     [SerializeField] private AnimatorData _animatorData;
     [SerializeField] private IKData _iKData;
+    [SerializeField] private SmoothLookerData _smoothLookerData;
 
     public MoverData MoverData => _moverData;
     public RotatorData RotatorData => _rotatorData;
@@ -18,4 +19,5 @@ public class PlayerData : ScriptableObject
     public DetectorData DetectorData => _detectorData;
     public AnimatorData AnimatorData => _animatorData;
     public IKData IKData => _iKData;
+    public SmoothLookerData SmoothLookerData => _smoothLookerData;
 }

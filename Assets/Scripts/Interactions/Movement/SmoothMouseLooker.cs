@@ -2,13 +2,26 @@ using UnityEngine;
 
 public class SmoothMouseLooker : MonoBehaviour
 {
-    [SerializeField] private MousePositionConverter _converter;
+    private MousePositionConverter _converter;
 
-    [SerializeField] private float _speed = 75f;
+    private SmoothLookerData _data;
+
+    private bool _isSetupFinished = false;
+
+    public void Setup(SmoothLookerData smoothLookerData, MousePositionConverter mousePositionConverter)
+    {
+        _data = smoothLookerData;
+        _converter = mousePositionConverter;
+
+        _isSetupFinished = true;
+    }
 
     private void LateUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, _converter.transform.position, _speed * Time.deltaTime);
+        if (_isSetupFinished == false)
+            return;
+
+        transform.position = Vector3.Lerp(transform.position, _converter.transform.position, _data.Speed * Time.deltaTime);
     }
 
     private void OnDrawGizmos()
